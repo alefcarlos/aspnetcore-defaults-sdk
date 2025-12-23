@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddWebApiDefaults();
 
-builder.Services.Configure<OpenApiInfo>(opts => opts.Description = "Description from this api bla bla bla");
+builder.Services.Configure<OpenApiInfo>(opts => opts.Description = "Description for this api bla bla bla");
 
 var app = builder.Build();
 
