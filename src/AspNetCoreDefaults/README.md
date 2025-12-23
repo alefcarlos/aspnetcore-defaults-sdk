@@ -1,4 +1,4 @@
-# AspNetCoreDefaults — README técnico 🔧
+# AspNetCoreDefaults 🔧
 
 Biblioteca base de convenções e extensões para aplicações ASP.NET Core focadas em Web APIs e serviços: oferece defaults opinativos para telemetria, logging HTTP, health checks, service discovery e configurações de HttpClient.
 

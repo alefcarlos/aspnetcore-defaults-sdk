@@ -1,4 +1,4 @@
-# AspNetCoreDefaults.WebApi — README técnico 🔧
+# AspNetCoreDefaults.WebApi 🔧
 
 Biblioteca de convenções e extensões para padronizar Web APIs ASP.NET Core (OpenAPI, ProblemDetails, health checks, logging e OpenTelemetry).
 
