@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/samples/">
+    <File Path="samples/webapi-default.cs" />
+    <File Path="samples/webapi-default.run.json" />
+    <File Path="webapi-default.settings.json" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/AspNetCoreDefaults.WebApi/AspNetCoreDefaults.WebApi.csproj" />
+    <Project Path="src/AspNetCoreDefaults/AspNetCoreDefaults.csproj" />
+  </Folder>
+  <Folder Name="/src/metapackages/">
+    <Project Path="src/metapackages/AspNetCoreDefaults.WebApi.All/AspNetCoreDefaults.WebApi.All.csproj" />
+  </Folder>
+</Solution>

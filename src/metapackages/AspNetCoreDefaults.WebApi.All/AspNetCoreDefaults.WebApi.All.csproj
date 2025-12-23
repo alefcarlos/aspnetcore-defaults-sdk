@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Ardalis.Result.AspNetCore" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AspNetCoreDefaults.WebApi\AspNetCoreDefaults.WebApi.csproj" />
+  </ItemGroup>
+</Project>
