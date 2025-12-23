@@ -32,9 +32,23 @@ Fornecer um conjunto mínimo e opinativo de defaults para projetos Web API, faci
   - `GET /app-info` → retorna `ApplicationMetadata` (excluído da documentação via `ExcludeFromDescription()`)
 
 ## Integração OpenAPI
-- `OpenApiInfo` é configurado via `IOptions<OpenApiInfo>` usando `ApplicationMetadata` (título e versão automáticos).
-- `OpenApiInfoTransformer` apenas define `document.Info` a partir das opções.
-- A documentação pública fica disponível em `/docs` (usando `Scalar.AspNetCore`) e `/swagger` quando configurado.
+- `OpenApiInfo` é exposto via `IOptions<OpenApiInfo>`; o pacote registra um `IConfigureOptions<OpenApiInfo>` que popula `Title` e `Version` automaticamente a partir de `ApplicationMetadata`.
+
+### Configurando `OpenApiInfo` via DI
+- Você pode personalizar o `OpenApiInfo` registrando sua própria configuração com `services.Configure<OpenApiInfo>(...)`. As configurações são aplicadas quando o documento OpenAPI é gerado.
+
+```csharp
+// Exemplo: adicionar descrição e contato
+builder.Services.Configure<OpenApiInfo>(opts =>
+{
+    opts.Description = "Descrição detalhada da API";
+    opts.Contact = new OpenApiContact { Name = "Equipe X", Email = "team@example.com" };
+});
+```
+
+- O `OpenApiInfoTransformer` atribui `document.Info = options.Value`, portanto quaisquer propriedades definidas via `Configure<OpenApiInfo>` aparecerão na documentação.
+
+- A documentação pública fica disponível em `/docs` (usando `Scalar.AspNetCore`)
 
 ## Logging e filtros
 - `AddHttpLoggingDefaults()` habilita `HttpLogging` com campos: request/response + headers + duration e `CombineLogs = true`.
