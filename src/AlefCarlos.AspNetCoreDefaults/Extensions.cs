@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.AmbientMetadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,6 +57,8 @@ public static class Extensions
                 options.EnvironmentName = hostEnvironment.EnvironmentName;
             })
             ;
+
+        builder.Services.Configure<KestrelServerOptions>(options => options.AddServerHeader = false);
 
         builder.AddHttpLoggingDefaults();
 

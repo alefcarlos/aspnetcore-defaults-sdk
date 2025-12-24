@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<ItemGroup>
+		<PackageReference Include="Mediator.SourceGenerator">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\src\metapackages\AlefCarlos.AspNetCoreDefaults.WebApi.All\AlefCarlos.AspNetCoreDefaults.WebApi.All.csproj" />
+		<ProjectReference Include="..\Infra\Infra.csproj" />
+		<ProjectReference Include="..\UseCases\UseCases.csproj" />
+	</ItemGroup>
+</Project>

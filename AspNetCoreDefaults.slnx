@@ -2,7 +2,13 @@
   <Folder Name="/samples/">
     <File Path="samples/webapi-default.cs" />
     <File Path="samples/webapi-default.run.json" />
-    <File Path="webapi-default.settings.json" />
+    <File Path="samples/webapi-default.settings.json" />
+  </Folder>
+  <Folder Name="/samples/Todo/">
+    <Project Path="samples/Todo/Core/Core.csproj" />
+    <Project Path="samples/Todo/Infra/Infra.csproj" />
+    <Project Path="samples/Todo/TodoApi/TodoApi.csproj" />
+    <Project Path="samples/Todo/UseCases/UseCases.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path="Directory.Build.props" />
