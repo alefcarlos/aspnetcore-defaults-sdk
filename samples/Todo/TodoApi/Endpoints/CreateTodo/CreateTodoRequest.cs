@@ -1,3 +1,5 @@
-﻿namespace TodoApi.Endpoints.CreateTodo;
+﻿using System.ComponentModel.DataAnnotations;
 
-public record CreateTodoRequest(string Name);
+namespace TodoApi.Endpoints.CreateTodo;
+
+public record CreateTodoRequest([Required]string Name);

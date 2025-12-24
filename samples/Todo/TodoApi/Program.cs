@@ -1,11 +1,13 @@
 using FluentValidation;
 using TodoApi.Endpoints;
 using UseCases;
-using UseCases.Behaviours;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddWebApiDefaults();
+builder.AddInfra();
+
+builder.Services.AddValidation();
 
 builder.Services.AddMediator(options =>
 {
@@ -15,11 +17,6 @@ builder.Services.AddMediator(options =>
     options.Assemblies =
     [
         typeof(IUseCasesMarker),
-    ];
-
-    options.PipelineBehaviors =
-    [
-        typeof(MessageValidatorBehaviour<,>),
     ];
 });
 
