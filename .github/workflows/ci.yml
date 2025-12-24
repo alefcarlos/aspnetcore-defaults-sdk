@@ -9,7 +9,7 @@ on:
       - 'v*'  # Ex: v1.0.0
 
 jobs:
-  build:
+  push:
 
     runs-on: ubuntu-latest
 
@@ -23,5 +23,7 @@ jobs:
       with:
           global-json-file: global.json
     - name: pack
-      run: |
-        dotnet pack
+      run: dotnet pack
+
+    - name: push
+      run: dotnet nuget push .\artifacts\package\release\*.nupkg
