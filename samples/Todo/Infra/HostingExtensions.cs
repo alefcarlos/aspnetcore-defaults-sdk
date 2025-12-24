@@ -13,6 +13,7 @@ public static class HostingExtensions
         builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("postgresdb")));
         builder.EnrichNpgsqlDbContext<ApplicationDbContext>();
 
+        builder.Services.AddHostedService<MigrationTask>();
         return builder;
     }
 }
