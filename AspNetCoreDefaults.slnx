@@ -9,10 +9,10 @@
     <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/AspNetCoreDefaults.WebApi/AspNetCoreDefaults.WebApi.csproj" />
-    <Project Path="src/AspNetCoreDefaults/AspNetCoreDefaults.csproj" />
+    <Project Path="src/AlefCarlos.AspNetCoreDefaults.WebApi/AlefCarlos.AspNetCoreDefaults.WebApi.csproj" />
+    <Project Path="src/AlefCarlos.AspNetCoreDefaults/AlefCarlos.AspNetCoreDefaults.csproj" />
   </Folder>
   <Folder Name="/src/metapackages/">
-    <Project Path="src/metapackages/AspNetCoreDefaults.WebApi.All/AspNetCoreDefaults.WebApi.All.csproj" />
+    <Project Path="src/metapackages/AlefCarlos.AspNetCoreDefaults.WebApi.All/AlefCarlos.AspNetCoreDefaults.WebApi.All.csproj" />
   </Folder>
 </Solution>

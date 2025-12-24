@@ -6,7 +6,7 @@ Biblioteca base de convenções e extensões para aplicações ASP.NET Core foca
 Fornecer um conjunto pequeno e reutilizável de padrões para serviços, permitindo que equipes iniciem novas APIs com observabilidade, resiliência e endpoints operacionais configurados de forma consistente.
 
 ## Pacote / dependências relevantes
-Baseadas no arquivo de projeto (`AspNetCoreDefaults.csproj`):
+Baseadas no arquivo de projeto (`AlefCarlos.AspNetCoreDefaults.csproj`):
 - `Microsoft.Extensions.AmbientMetadata.Application` (ApplicationMetadata)
 - `Microsoft.Extensions.Http.Resilience` (resiliência de HttpClient)
 - `Microsoft.Extensions.ServiceDiscovery` (service discovery)

@@ -88,7 +88,7 @@ app.Run();
 ```
 
 ## Como referenciar
-- Adicione referência ao projeto `src/AspNetCoreDefaults.WebApi` ou ao metapacote `src/metapackages/AspNetCoreDefaults.WebApi.All`.
+- Adicione referência ao projeto `src/AlefCarlos.AspNetCoreDefaults.WebApi` ou ao metapacote `src/metapackages/AlefCarlos.AspNetCoreDefaults.WebApi.All`.
 - Chame `builder.AddWebApiDefaults()` na construção da aplicação e `app.MapDefaultWebApiEndpoints()` no pipeline.
 
 ## Run & Debug (amostra)

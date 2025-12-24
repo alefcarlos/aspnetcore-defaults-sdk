@@ -13,9 +13,9 @@
 
 ## 🧩 Projetos fornecidos
 
-- `src/AspNetCoreDefaults` — extensões genéricas (telemetria, health checks, http logging, service discovery, etc.)
-- `src/AspNetCoreDefaults.WebApi` — extensões e OpenAPI para Web APIs
-- `src/metapackages/AspNetCoreDefaults.WebApi.All` — metapacote que referencia `AspNetCoreDefaults.WebApi`
+- `src/AlefCarlos.AspNetCoreDefaults` — extensões genéricas (telemetria, health checks, http logging, service discovery, etc.)
+- `src/AlefCarlos.AspNetCoreDefaults.WebApi` — extensões e OpenAPI para Web APIs
+- `src/metapackages/AlefCarlos.AspNetCoreDefaults.WebApi.All` — metapacote que referencia `AlefCarlos.AspNetCoreDefaults.WebApi`
 
 ## Começando — Exemplo rápido 🚀
 
@@ -67,7 +67,7 @@ app.Run();
 
 ## Como referenciar
 
-- Referencie o metapacote `src/metapackages/AspNetCoreDefaults.WebApi.All`
+- Referencie o metapacote `src/metapackages/AlefCarlos.AspNetCoreDefaults.WebApi.All`
 - Em um projeto: adicione `builder.AddWebApiDefaults()` no `Program.cs` e depois `app.MapDefaultWebApiEndpoints()` ao construir o pipeline
 
 ## Observações técnicas / decisões 💡

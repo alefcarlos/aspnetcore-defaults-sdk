@@ -4,6 +4,6 @@
     <PackageReference Include="Scalar.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AspNetCoreDefaults\AspNetCoreDefaults.csproj" />
+    <ProjectReference Include="..\AlefCarlos.AspNetCoreDefaults\AlefCarlos.AspNetCoreDefaults.csproj" />
   </ItemGroup>
 </Project>

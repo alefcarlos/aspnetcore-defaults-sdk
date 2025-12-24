@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpLogging;
 
-namespace AspNetCoreDefaults;
+namespace AlefCarlos.AspNetCoreDefaults;
 
 internal class FilterRequestLoggingInterceptor : IHttpLoggingInterceptor
 {
