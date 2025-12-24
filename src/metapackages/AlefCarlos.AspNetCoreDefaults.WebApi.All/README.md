@@ -55,14 +55,38 @@ app.MapDefaultWebApiEndpoints();
 app.Run();
 ```
 
-## Como referenciar
-- Chame `builder.AddWebApiDefaults()` na construção da aplicação e `app.MapDefaultWebApiEndpoints()` no pipeline.
+## Padrão Result
 
-## Run & Debug (amostra)
-- `samples/webapi-default.cs` exemplifica a integração completa. Use `dotnet run` e verifique `/health`, `/alive`, `/app-info` e `/docs`.
-- `samples/webapi-default.run.json` contém variáveis de ambiente úteis (`ASPNETCORE_ENVIRONMENT=Development`, `OTEL_SERVICE_NAME=sample-api`).
+Este projeto adota o *Result Pattern* usando a biblioteca **Ardalis.Result** (e o pacote `Ardalis.Result.AspNetCore`) para padronizar retornos de operações e facilitar a tradução para respostas HTTP sem lançar exceções para fluxos esperados.
 
-## Considerações e boas práticas
+### Por que usar ✅
+- Evita o uso excessivo de exceções para fluxos esperados (ex.: não encontrado, validação).
+- Torna o comportamento das APIs previsível e testável.
+- Facilita mapeamento consistente para códigos HTTP, body de erro (ProblemDetails) e documentação (Swagger/OpenAPI).
 
-- Configure níveis de logging via `appsettings.*.json` para controlar dados sensíveis em produção.
-- Teste traces e métricas em ambiente de staging antes de habilitar OTLP em produção.
+### Integração no projeto 🔧
+- Já incluímos `Ardalis.Result` e `Ardalis.Result.AspNetCore` nas dependências (veja `Directory.Packages.props` / metapacote).
+- Para Minimal APIs utilize `ToMinimalApiResult()`; para controllers use `[TranslateResultToActionResult]` ou `ToActionResult()`.
+
+### Exemplos (baseados no sample Todo) 💡
+
+Minimal API endpoint (exemplo simplificado):
+```csharp
+app.MapPost("/todos", async (IMediator mediator, CreateTodoRequest request) =>
+{
+    var result = await mediator.Send(new CreateTodoCommand(request.Name));
+    return result.ToMinimalApiResult();
+});
+```
+
+Handler (use case) retornando Result:
+```csharp
+public class CreateTodoHandler : ICommandHandler<CreateTodoCommand, Result>
+{
+    public async ValueTask<Result> Handle(CreateTodoCommand command, CancellationToken cancellationToken)
+    {
+        // lógica de criação
+        return Result.Success();
+    }
+}
+```
