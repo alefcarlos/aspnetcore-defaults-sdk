@@ -1,4 +1,5 @@
 ﻿using TodoApi.Endpoints.CreateTodo;
+using TodoApi.Endpoints.GetTodo;
 
 namespace TodoApi.Endpoints
 {
@@ -11,6 +12,7 @@ namespace TodoApi.Endpoints
                 ;
 
             group.MapCreateTodo();
+            group.MapGetTodo();
 
             return endpoints;
         }
