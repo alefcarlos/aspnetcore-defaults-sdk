@@ -10,7 +10,7 @@ internal class FilterRequestLoggingInterceptor : IHttpLoggingInterceptor
         if (!context.Request.Path.HasValue)
             return false;
 
-        return context.Request.Path.Value.Contains(path, StringComparison.InvariantCultureIgnoreCase);
+        return context.Request.Path.StartsWithSegments(path);
     }
 
     public ValueTask OnRequestAsync(HttpLoggingInterceptorContext logContext)
