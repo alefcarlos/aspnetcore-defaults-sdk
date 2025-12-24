@@ -3,6 +3,6 @@
     <PackageReference Include="Ardalis.Result.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AlefCarlos.AspNetCoreDefaults.WebApi\AspNetCoreDefaultsAlefCarlos..WebApi.csproj" />
+    <ProjectReference Include="..\..\AlefCarlos.AspNetCoreDefaults.WebApi\AspNetCoreDefaultsAlefCarlos.WebApi.csproj" />
   </ItemGroup>
 </Project>
