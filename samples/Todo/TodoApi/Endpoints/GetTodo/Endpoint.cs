@@ -1,10 +1,8 @@
-using Ardalis.Result.AspNetCore;
-using Core;
 using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using UseCases.Get;
 using UseCases.GetAll;
-using TodoApi.Endpoints;
+using TodoApi.Endpoints.Responses;
 
 namespace TodoApi.Endpoints.GetTodo
 {
@@ -13,14 +11,16 @@ namespace TodoApi.Endpoints.GetTodo
         public static IEndpointRouteBuilder MapGetTodo(this IEndpointRouteBuilder endpoints)
         {
             endpoints.MapGet("{id:guid}", GetByIdAsync);
+            endpoints.MapGet("", GetAllAsync);
 
-            endpoints.MapGet("", async (IMediator mediator) =>
-            {
+            return endpoints;
+        }
+
+        private static async ValueTask<Ok<IEnumerable<TodoResponse>>> GetAllAsync(IMediator mediator)
+        {
                 var result = await mediator.Send(new GetAllTodosQuery());
 
-                return result.ToMinimalApiResult();
-            });
-            return endpoints;
+                return result.ToOkOnlyResult((list) => list.Select(TodoResponse.FromEntity));
         }
 
         private static async ValueTask<Results<Ok<TodoResponse>, NotFound, ProblemHttpResult>> GetByIdAsync(IMediator mediator, Guid id)
@@ -28,13 +28,6 @@ namespace TodoApi.Endpoints.GetTodo
             var result = await mediator.Send(new GetTodoQuery(new(id)));
 
             return result.ToGetByIdResult(TodoResponse.FromEntity);
-        }
-    }
-    public record TodoResponse(Guid Id, string Name)
-    {
-        public static TodoResponse FromEntity(TodoEntity entity)
-        {
-            return new(entity.Id.Value, entity.Name);
         }
     }
 }
