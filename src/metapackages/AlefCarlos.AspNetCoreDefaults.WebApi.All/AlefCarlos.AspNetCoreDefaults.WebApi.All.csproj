@@ -1,8 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Ardalis.Result.AspNetCore" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\AlefCarlos.AspNetCoreDefaults.WebApi\AlefCarlos.AspNetCoreDefaults.WebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>
