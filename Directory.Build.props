@@ -16,6 +16,12 @@
     <MinVerTagPrefix>v</MinVerTagPrefix>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Authors>Alef Carlos</Authors>
+    <RepositoryUrl>https://github.com/alefcarlos/aspnetcore-defaults-sdk</RepositoryUrl>
+    <PackageTags>aspnetcore-sdk aspnetcore-defaults aspnetcore-webapi</PackageTags>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
