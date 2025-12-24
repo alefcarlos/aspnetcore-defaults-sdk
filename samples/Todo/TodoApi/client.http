@@ -1,0 +1,10 @@
+@WebApi_HostAddress = https://todo-api-apphost.dev.localhost:7038
+
+POST {{WebApi_HostAddress}}/v1/todos
+Content-Type: application/json
+
+{
+  "Name": ""
+}
+
+###
