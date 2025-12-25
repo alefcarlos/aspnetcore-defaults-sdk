@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using UseCases.Get;
 using UseCases.GetAll;
 using TodoApi.Endpoints.Responses;
+using AlefCarlos.AspNetCoreDefaults.WebApi;
 
 namespace TodoApi.Endpoints.GetTodo
 {

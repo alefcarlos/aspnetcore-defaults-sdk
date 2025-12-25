@@ -87,6 +87,43 @@ app.MapDefaultWebApiEndpoints();
 app.Run();
 ```
 
+
+## Padrão Result
+
+Este projeto adota o *Result Pattern* usando a biblioteca **Ardalis.Result** (e o pacote `Ardalis.Result.AspNetCore`) para padronizar retornos de operações e facilitar a tradução para respostas HTTP sem lançar exceções para fluxos esperados.
+
+### Por que usar ✅
+- Evita o uso excessivo de exceções para fluxos esperados (ex.: não encontrado, validação).
+- Torna o comportamento das APIs previsível e testável.
+- Facilita mapeamento consistente para códigos HTTP, body de erro (ProblemDetails) e documentação (Swagger/OpenAPI).
+
+### Integração no projeto 🔧
+
+- Já incluímos `Ardalis.Result` e `Ardalis.Result.AspNetCore` nas dependências (veja `Directory.Packages.props` / metapacote).
+
+### Exemplos (baseados no sample Todo) 💡
+
+Minimal API endpoint (exemplo simplificado):
+```csharp
+app.MapPost("/todos", async (IMediator mediator, CreateTodoRequest request) =>
+{
+    var result = await mediator.Send(new CreateTodoCommand(request.Name));
+    return result.ToCreatedResult();
+});
+```
+
+Handler (use case) retornando Result:
+```csharp
+public class CreateTodoHandler : ICommandHandler<CreateTodoCommand, Result>
+{
+    public async ValueTask<Result> Handle(CreateTodoCommand command, CancellationToken cancellationToken)
+    {
+        // lógica de criação
+        return Result.Success();
+    }
+}
+```
+
 ## Como referenciar
 - Adicione referência ao projeto `src/AlefCarlos.AspNetCoreDefaults.WebApi` ou ao metapacote `src/metapackages/AlefCarlos.AspNetCoreDefaults.WebApi.All`.
 - Chame `builder.AddWebApiDefaults()` na construção da aplicação e `app.MapDefaultWebApiEndpoints()` no pipeline.

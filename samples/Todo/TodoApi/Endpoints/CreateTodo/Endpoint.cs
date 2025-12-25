@@ -1,4 +1,5 @@
-﻿using Mediator;
+﻿using AlefCarlos.AspNetCoreDefaults.WebApi;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using UseCases.Create;

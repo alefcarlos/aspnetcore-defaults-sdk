@@ -1,7 +1,8 @@
 using Ardalis.Result;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace TodoApi.Endpoints;
+namespace AlefCarlos.AspNetCoreDefaults.WebApi;
 
 public static class ResultExtensions
 {
