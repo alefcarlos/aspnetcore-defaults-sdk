@@ -7,6 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddWebApiDefaults();
 builder.AddInfra();
 
+builder.Services.AddAuthentication()
+    .AddJwtBearer()
+    ;
+
+builder.Services.AddJwtBearerOpenApiTransformers();
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddValidation();
 
 builder.Services.AddMediator(options =>
@@ -30,6 +38,10 @@ app.UseProblemDetailsWithDefaults();
 
 app.MapDefaultWebApiEndpoints();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapTodoEndpoints();
+app.MapGet("ping", () => "pong");
 
 app.Run();
