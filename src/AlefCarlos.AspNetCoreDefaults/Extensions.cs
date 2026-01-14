@@ -75,6 +75,12 @@ public static class Extensions
 
             // Turn on service discovery by default
             http.AddServiceDiscovery();
+
+            http.ConfigureHttpClient((provider, configureClient) =>
+            {
+                var appMetadata = provider.GetRequiredService<IOptions<ApplicationMetadata>>().Value;
+                configureClient.DefaultRequestHeaders.UserAgent.ParseAdd($"{appMetadata.ApplicationName}/{appMetadata.BuildVersion}");
+            });
         });
 
         return builder;

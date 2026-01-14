@@ -1,4 +1,5 @@
 using FluentValidation;
+using Neovortex.Mediator.OpenTelemetry;
 using TodoApi.Endpoints;
 using UseCases;
 
@@ -27,6 +28,9 @@ builder.Services.AddMediator(options =>
         typeof(IUseCasesMarker),
     ];
 });
+
+builder.Services.AddMediatorOpenTelemetry();
+builder.Services.AddOpenTelemetry().WithTracing(t=> t.AddMediatorInstrumentation());
 
 builder.Services.AddValidatorsFromAssemblies([typeof(IUseCasesMarker).Assembly]);
 

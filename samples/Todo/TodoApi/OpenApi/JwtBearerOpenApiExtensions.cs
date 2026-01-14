@@ -3,7 +3,7 @@ using TodoApi.OpenApi;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class Extensions
+internal static class JwtBearerOpenApiExtensions
 {
     public static IServiceCollection AddJwtBearerOpenApiTransformers(this IServiceCollection services)
     {
