@@ -7,7 +7,6 @@
     <File Path="samples/webapi-default.settings.json" />
   </Folder>
   <Folder Name="/samples/Todo/">
-    <Project Path="samples/Todo/AppHost/AppHost.csproj" Id="0931a04c-170a-43fd-b7b3-2b00c5ee7881" />
     <Project Path="samples/Todo/Core/Core.csproj" />
     <Project Path="samples/Todo/Infra/Infra.csproj" />
     <Project Path="samples/Todo/TodoApi/TodoApi.csproj" />
