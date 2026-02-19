@@ -6,18 +6,16 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 internal class ConfigureJwtBearerOptionsDefaults : IPostConfigureOptions<JwtBearerOptions>
 {
-    private readonly string _scheme;
     private readonly ApplicationMetadata _applicationMetadata;
 
-    public ConfigureJwtBearerOptionsDefaults(ApplicationMetadata applicationMetadata, string scheme)
+    public ConfigureJwtBearerOptionsDefaults(IOptions<ApplicationMetadata> applicationMetadata)
     {
-        _applicationMetadata = applicationMetadata;
-        _scheme = scheme;
+        _applicationMetadata = applicationMetadata.Value;
     }
 
     public void PostConfigure(string? name, JwtBearerOptions options)
     {
-        if (_scheme != name)
+        if (string.IsNullOrWhiteSpace(name))
         {
             return;
         }
