@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
 
-namespace TodoApi.OpenApi;
+namespace AlefCarlos.AspNetCoreDefaults.WebApi.Authentication.OpenApi;
 
 internal sealed class BearerAuthOperationTransformer : IOpenApiOperationTransformer
 {

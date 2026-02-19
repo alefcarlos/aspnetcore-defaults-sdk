@@ -10,9 +10,9 @@ namespace Microsoft.Extensions.Hosting;
 
 public static class Extensions
 {
-    public static WebApplicationBuilder AddWebApiDefaults(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddWebApiDefaults(this WebApplicationBuilder builder, Action<ApplicationMetadata>? configureApp = null)
     {
-        builder.AddDefaults();
+        builder.AddDefaults(configureApp);
 
         builder.Services.AddProblemDetails();
 

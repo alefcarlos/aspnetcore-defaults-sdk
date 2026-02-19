@@ -1,26 +1,18 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.Extensions.Options;
 using Neovortex.Mediator.OpenTelemetry;
 using TodoApi.Endpoints;
 using UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHealthChecks().AddCheck<StartupDelayHealthCheck>("degraded", tags: ["live"]);
-
 builder.AddWebApiDefaults();
 builder.AddInfra();
 
 builder.Services.AddAuthentication()
-    .AddJwtBearer()
+    .AddJwtBearerDefaults()
     ;
 
-builder.Services.AddJwtBearerOpenApiTransformers();
-
-builder.Services.AddAuthorizationBuilder().AddPolicy("Alef", p=> p.RequireRole("role")) ;
+builder.Services.AddAuthorizationBuilder();
 
 builder.Services.AddValidation();
 
@@ -55,18 +47,3 @@ app.MapTodoEndpoints();
 app.MapGet("ping", () => "pong");
 
 app.Run();
-
-public class Teste : DefaultAuthorizationPolicyProvider
-{
-    private readonly AuthorizationOptions _options;
-
-    public Teste(IOptions<AuthorizationOptions> options) : base(options)
-    {
-        _options = options.Value;
-    }
-
-    public override Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
-    {
-        return base.GetPolicyAsync(policyName);
-    }
-}

@@ -1,9 +1,9 @@
+using AlefCarlos.AspNetCoreDefaults.WebApi.Authentication.OpenApi;
 using Microsoft.AspNetCore.OpenApi;
-using TodoApi.OpenApi;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-internal static class JwtBearerOpenApiExtensions
+public static class JwtBearerOpenApiExtensions
 {
     public static IServiceCollection AddJwtBearerOpenApiTransformers(this IServiceCollection services)
     {

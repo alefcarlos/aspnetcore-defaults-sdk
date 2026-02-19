@@ -25,13 +25,15 @@ public static class Extensions
     private const string HealthEndpointPath = "/health";
     private const string AlivenessEndpointPath = "/alive";
 
-    public static TBuilder AddDefaults<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
+    public static TBuilder AddDefaults<TBuilder>(this TBuilder builder, Action<ApplicationMetadata>? configureApp = null) where TBuilder : IHostApplicationBuilder
     {
         builder.Services.AddOptionsWithValidateOnStart<ApplicationMetadata>()
             .ValidateDataAnnotations()
             .BindConfiguration("ambientmetadata:application")
             .Configure<IConfiguration, IHostEnvironment>((options, configuration, hostEnvironment) =>
             {
+                configureApp?.Invoke(options);
+
                 var informationalVersion = Assembly
                     .GetEntryAssembly()?
                     .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
@@ -45,14 +47,15 @@ public static class Extensions
                     .GetName()
                     .Version?.ToString();
 
-                var defaultAppName = "unknown-app";
-                options.BuildVersion = informationalVersion ?? version ?? $"0.1.0+{defaultAppName}";
+                options.ApplicationName ??= "unknown-app";
 
                 var otelServiceName = configuration["OTEL_SERVICE_NAME"];
                 if (otelServiceName is not null)
                 {
                     options.ApplicationName = otelServiceName;
                 }
+
+                options.BuildVersion = informationalVersion ?? version ?? $"0.1.0+{options.ApplicationName}";
 
                 options.EnvironmentName = hostEnvironment.EnvironmentName;
             })
