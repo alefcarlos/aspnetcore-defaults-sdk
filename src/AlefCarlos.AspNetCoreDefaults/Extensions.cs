@@ -47,7 +47,10 @@ public static class Extensions
                     .GetName()
                     .Version?.ToString();
 
-                options.ApplicationName ??= "unknown-app";
+                if (string.IsNullOrWhiteSpace(options.ApplicationName))
+                {
+                    options.ApplicationName = hostEnvironment.ApplicationName;
+                }
 
                 var otelServiceName = configuration["OTEL_SERVICE_NAME"];
                 if (otelServiceName is not null)

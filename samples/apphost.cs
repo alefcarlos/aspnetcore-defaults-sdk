@@ -33,7 +33,6 @@ builder.AddProject<Projects.TodoApi>("todo-api")
     .WithEnvironment(context =>
     {
        context.EnvironmentVariables["Authentication__Schemes__Bearer__Authority"] = $"{keycloak.GetEndpoint("https").Url}/realms/local";
-       context.EnvironmentVariables["Authentication__Schemes__Bearer__ValidAudience"] = "";
        context.EnvironmentVariables["Authentication__Schemes__Bearer__ValidIssuer"] = "";
     });
 
