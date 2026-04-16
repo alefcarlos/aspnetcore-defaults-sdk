@@ -21,6 +21,6 @@
     <Project Path="src/AlefCarlos.AspNetCoreDefaults/AlefCarlos.AspNetCoreDefaults.csproj" />
   </Folder>
   <Folder Name="/src/metapackages/">
-    <Project Path="src/metapackages/AlefCarlos.AspNetCoreDefaults.WebApi.All/AlefCarlos.AspNetCoreDefaults.WebApi.All.csproj" />
+    <Project Path="src/metapackages/AlefCarlos.AspNetCore.WebApi/AlefCarlos.AspNetCore.WebApi.csproj" />
   </Folder>
 </Solution>

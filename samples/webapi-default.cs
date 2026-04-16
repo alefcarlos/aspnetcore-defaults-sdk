@@ -1,7 +1,7 @@
 ﻿#:sdk Microsoft.NET.Sdk.Web
 #:property PublishAot=false
 #:property IncludeSourceRevisionInInformationalVersion=false
-#:project ../src/metapackages/AlefCarlos.AspNetCoreDefaults.WebApi.All
+#:project ../src/metapackages/AlefCarlos.AspNetCore.WebApi
 
 using Microsoft.OpenApi;
 

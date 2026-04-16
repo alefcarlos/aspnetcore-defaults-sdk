@@ -1,4 +1,5 @@
-﻿using Infra;
+﻿using System.Reflection;
+using Infra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +14,16 @@ public static class HostingExtensions
         builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("postgresdb")));
         builder.EnrichNpgsqlDbContext<ApplicationDbContext>();
 
-        builder.Services.AddHostedService<MigrationTask>();
+        if (!IsGeneratingOpenApi())
+        {
+            builder.Services.AddHostedService<MigrationTask>();
+        }
+
         return builder;
+    }
+
+    public static bool IsGeneratingOpenApi()
+    {
+        return Assembly.GetEntryAssembly()?.GetName().Name == "GetDocument.Insider";
     }
 }

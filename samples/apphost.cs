@@ -1,4 +1,4 @@
-﻿#:sdk Aspire.AppHost.Sdk@13.1.1
+#:sdk Aspire.AppHost.Sdk@13.2.0
 #:property UserSecretsId=bfd49f4e-ccdf-4c22-980e-72d360def663
 #:project ../samples/Todo/TodoApi/
 #:package Aspire.Hosting.Kubernetes
