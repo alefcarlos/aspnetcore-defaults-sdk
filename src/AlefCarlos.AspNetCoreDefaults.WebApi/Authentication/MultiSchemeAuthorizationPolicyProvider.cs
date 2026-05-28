@@ -26,12 +26,17 @@ internal sealed class MultiSchemeAuthorizationPolicyProvider : DefaultAuthorizat
         if (policy is null)
             return policy;
 
-        //Verificar se a policy tem scheme do dotnet-user-jwt, se não tiver e o esquema estiver registrado, adiciona.
-        if (!policy.AuthenticationSchemes.Contains(AuthenticationDefaults.DotnetUserJwtScheme) && _schemes.Contains(AuthenticationDefaults.DotnetUserJwtScheme))
+        if (policy.AuthenticationSchemes.Any())
         {
-            return new AuthorizationPolicyBuilder(policy)
-                .AddAuthenticationSchemes(AuthenticationDefaults.DotnetUserJwtScheme)
-                .Build();
+            //Verificar se a policy tem scheme do dotnet-user-jwt, se não tiver e o esquema estiver registrado, adiciona.
+            if (!policy.AuthenticationSchemes.Contains(AuthenticationDefaults.DotnetUserJwtScheme) && _schemes.Contains(AuthenticationDefaults.DotnetUserJwtScheme))
+            {
+                return new AuthorizationPolicyBuilder(policy)
+                    .AddAuthenticationSchemes(AuthenticationDefaults.DotnetUserJwtScheme)
+                    .Build();
+            }
+
+            return policy;
         }
 
         //Caso não tenha nenhum esquema registrado, retornar a policy original, caso contrário, adicionar os esquemas registrados.
