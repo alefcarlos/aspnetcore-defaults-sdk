@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Builder;
+namespace AlefCarlos.AspNetCoreDefaults.WebApi.Authentication;
 
 internal class ConfigureAuthorizationOptions : IPostConfigureOptions<AuthorizationOptions>
 {

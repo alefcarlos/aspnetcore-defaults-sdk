@@ -1,8 +1,22 @@
 {
-    "Logging": {
-        "LogLevel": {
-            "Microsoft.AspNetCore": "Warning",
-            "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Information"
-        }
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Information",
+      "Microsoft.AspNetCore.Authorization": "Information",
+      "Microsoft.AspNetCore.Authentication": "Information"
     }
+  },
+  "Authentication": {
+    "Schemes": {
+      "dotnet-user-jwts": {
+        "ValidAudiences": [
+          "https://localhost:7386",
+          "http://localhost:5564"
+        ],
+        "ValidIssuer": "dotnet-user-jwts"
+      }
+    }
+  }
 }

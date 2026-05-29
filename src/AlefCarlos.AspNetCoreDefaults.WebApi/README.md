@@ -64,12 +64,53 @@ builder.Services.Configure<OpenApiInfo>(opts =>
 - `AddDefaultHealthChecks()` adiciona o check `self` (tagged `live`) que garante liveness por padrão.
 - Para readiness/live customizados, adicione checks à coleção `IHealthChecksBuilder` com tags apropriadas.
 
+## Autenticação
+
+O `builder.Authentication` expõe um `AuthenticationDefaultsBuilder` que facilita a configuração de autenticação com suporte a múltiplos esquemas.
+
+### Registro do `dotnet-user-jwts` (desenvolvimento)
+
+```csharp
+builder.Authentication
+    .AddJwtBearerDefaults();
+```
+
+Em `Development`, o método registra o esquema JWT Bearer com o scheme `dotnet-user-jwts` e define-o como padrão. Após o registro, gere tokens de teste com:
+
+```bash
+dotnet user-jwts create --scheme dotnet-user-jwts
+```
+
+O `--scheme` é necessário para que a ferramenta crie a infraestrutura de user-secrets associada ao scheme correto.
+
+### Schemes customizados
+
+O `AuthenticationDefaultsBuilder.Schemes` é um `AuthenticationBuilder` — você pode registrar outros esquemas livremente:
+
+```csharp
+builder.Authentication
+    .AddJwtBearerDefaults()
+    .Schemes.AddCookie("my-cookie")
+    .Schemes.AddJwtBearer("external", opts => { /* ... */ });
+```
+
+### Por que usar?
+
+- Integração direta com `dotnet user-jwts`
+- Documentação OpenAPI (`Bearer`) gerada automaticamente
+- `MultiSchemeAuthorizationPolicyProvider` inclui o scheme `dotnet-user-jwts` em todas as políticas de autorização automaticamente
+
 ## Exemplo rápido (Program.cs)
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
 
 // Configura defaults opinativos para WebApi (telemetria, logging, health checks, OpenAPI)
 builder.AddWebApiDefaults();
+
+builder.Authentication
+    .AddJwtBearerDefaults();
+
+builder.Services.AddAuthorization();
 
 // Personalize OpenAPI se desejar
 builder.Services.Configure<OpenApiInfo>(opts => opts.Description = "Descrição detalhada da API");
@@ -78,6 +119,8 @@ var app = builder.Build();
 
 app.UseHttpLogging();
 app.UseProblemDetailsWithDefaults();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGet("/", () => new { Message = "Hello, World!" }).WithName("HelloWorld");
 

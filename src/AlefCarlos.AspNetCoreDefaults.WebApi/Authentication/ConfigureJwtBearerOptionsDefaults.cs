@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.AmbientMetadata;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace AlefCarlos.AspNetCoreDefaults.WebApi.Authentication;
 
 internal class ConfigureJwtBearerOptionsDefaults : IPostConfigureOptions<JwtBearerOptions>
 {

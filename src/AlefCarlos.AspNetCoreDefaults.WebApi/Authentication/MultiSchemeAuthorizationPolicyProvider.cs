@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Builder;
+namespace AlefCarlos.AspNetCoreDefaults.WebApi.Authentication;
 
 internal sealed class MultiSchemeAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
 {

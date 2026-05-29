@@ -1,0 +1,6 @@
+GET http://localhost:5000/ping
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFsZWZjYXJsb3MiLCJzdWIiOiJhbGVmY2FybG9zIiwianRpIjoiZTNmZTY3ZDAiLCJhdWQiOiJzYW1wbGUtYXBpIiwibmJmIjoxNzgwMDYyNjg5LCJleHAiOjE3ODgwMTE0ODksImlhdCI6MTc4MDA2MjY5MCwiaXNzIjoiZG90bmV0LXVzZXItand0cyJ9.uPPBwGaIx3vILXF0YexmQFBzhsrdzuCQEhx-z_XcUTs
+
+###
+
+GET http://localhost:5000/openapi/v1.json

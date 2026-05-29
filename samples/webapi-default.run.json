@@ -1,11 +1,11 @@
 ﻿{
 	"$schema": "https://json.schemastore.org/launchsettings.json",
 	"profiles": {
-		"https": {
+		"http": {
 			"commandName": "Project",
 			"dotnetRunMessages": true,
 			"launchBrowser": true,
-			"applicationUrl": "https://sample-api.dev.localhost:5001;http://sample-api.dev.localhost:5000",
+			"applicationUrl": "http://sample-api.dev.localhost:5000",
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development",
 				"OTEL_SERVICE_NAME": "sample-api"

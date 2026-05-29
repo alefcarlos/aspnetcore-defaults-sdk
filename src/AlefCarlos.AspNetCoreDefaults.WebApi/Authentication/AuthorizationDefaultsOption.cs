@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AspNetCore.Builder;
+﻿namespace AlefCarlos.AspNetCoreDefaults.WebApi.Authentication;
 
 public class AuthorizationDefaultsOption
 {
