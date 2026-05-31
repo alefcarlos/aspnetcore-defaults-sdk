@@ -32,6 +32,30 @@ public static class ResultExtensions
   /// <summary>
   /// Maps Result to TypedResults for endpoints that return Created, ValidationProblem, or ProblemHttpResult
   /// </summary>
+  public static Results<Created, ValidationProblem, ProblemHttpResult> ToCreatedResult<TValue>(
+    this Result<TValue> result)
+  {
+    return result.Status switch
+    {
+      ResultStatus.Ok => TypedResults.Created(),
+      ResultStatus.Invalid => TypedResults.ValidationProblem(
+        result.ValidationErrors
+          .GroupBy(e => e.Identifier ?? string.Empty)
+          .ToDictionary(
+            g => g.Key,
+            g => g.Select(e => e.ErrorMessage).ToArray()
+          )
+      ),
+      _ => TypedResults.Problem(
+        title: "Create failed",
+        detail: string.Join("; ", result.Errors),
+        statusCode: StatusCodes.Status400BadRequest)
+    };
+  }
+
+  /// <summary>
+  /// Maps Result to TypedResults for endpoints that return Created, ValidationProblem, or ProblemHttpResult
+  /// </summary>
   public static Results<Created<TResponse>, ValidationProblem, ProblemHttpResult> ToCreatedResult<TValue, TResponse>(
     this Result<TValue> result,
     Func<TValue, string> locationBuilder,
@@ -92,23 +116,36 @@ public static class ResultExtensions
     };
   }
 
-  /// <summary>
-  /// Private helper method for Ok/NotFound result patterns
-  /// </summary>
-  private static Results<Ok<TResponse>, NotFound, ProblemHttpResult> ToOkOrNotFoundResult<TValue, TResponse>(
-    Result<TValue> result,
-    Func<TValue, TResponse> mapResponse,
-    string operationName)
+  public static Results<Ok, NotFound, ProblemHttpResult> ToOkOrNotFoundResult(this Result result, string operationName)
   {
-    return result.Status switch
+    switch (result.Status)
     {
-      ResultStatus.Ok => TypedResults.Ok(mapResponse(result.Value)),
-      ResultStatus.NotFound => TypedResults.NotFound(),
-      _ => TypedResults.Problem(
-        title: $"{operationName} failed",
-        detail: string.Join("; ", result.Errors),
-        statusCode: StatusCodes.Status400BadRequest)
-    };
+      case ResultStatus.Ok:
+        return TypedResults.Ok();
+      case ResultStatus.NotFound:
+        return TypedResults.NotFound();
+      default:
+        {
+          string title = operationName + " failed";
+          return TypedResults.Problem(string.Join("; ", result.Errors), null, 400, title);
+        }
+    }
+  }
+
+  public static Results<Ok<TResponse>, NotFound, ProblemHttpResult> ToOkOrNotFoundResult<TValue, TResponse>(this Result<TValue> result, Func<TValue, TResponse> mapResponse, string operationName)
+  {
+    switch (result.Status)
+    {
+      case ResultStatus.Ok:
+        return TypedResults.Ok(mapResponse(result.Value));
+      case ResultStatus.NotFound:
+        return TypedResults.NotFound();
+      default:
+        {
+          string title = operationName + " failed";
+          return TypedResults.Problem(string.Join("; ", result.Errors), null, 400, title);
+        }
+    }
   }
 
   /// <summary>
@@ -119,5 +156,13 @@ public static class ResultExtensions
     Func<TValue, TResponse> mapResponse)
   {
     return TypedResults.Ok(mapResponse(result.Value));
+  }
+
+  /// <summary>
+  /// Maps Result to TypedResults for endpoints that return NoContent
+  /// </summary>
+  public static NoContent ToNoContentOnlyResult(this Result _)
+  {
+    return TypedResults.NoContent();
   }
 }
