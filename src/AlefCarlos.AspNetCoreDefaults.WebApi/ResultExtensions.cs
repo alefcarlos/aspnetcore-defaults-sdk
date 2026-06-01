@@ -6,163 +6,205 @@ namespace AlefCarlos.AspNetCoreDefaults.WebApi;
 
 public static class ResultExtensions
 {
-  /// <summary>
-  /// Maps Result to TypedResults for endpoints that return Created, ValidationProblem, or ProblemHttpResult
-  /// </summary>
-  public static Results<Created, ValidationProblem, ProblemHttpResult> ToCreatedResult(this Result result)
-  {
-    return result.Status switch
+    public static Results<
+        Created<TResponse>,
+        ValidationProblem,
+        Conflict,
+        ProblemHttpResult>
+        ToCreated<TValue, TResponse>(
+            this Result<TValue> result,
+            Func<TValue, string> locationBuilder,
+            Func<TValue, TResponse> responseBuilder)
     {
-      ResultStatus.Ok => TypedResults.Created(),
-      ResultStatus.Invalid => TypedResults.ValidationProblem(
-        result.ValidationErrors
-          .GroupBy(e => e.Identifier ?? string.Empty)
-          .ToDictionary(
-            g => g.Key,
-            g => g.Select(e => e.ErrorMessage).ToArray()
-          )
-      ),
-      _ => TypedResults.Problem(
-        title: "Create failed",
-        detail: string.Join("; ", result.Errors),
-        statusCode: StatusCodes.Status400BadRequest)
-    };
-  }
-
-  /// <summary>
-  /// Maps Result to TypedResults for endpoints that return Created, ValidationProblem, or ProblemHttpResult
-  /// </summary>
-  public static Results<Created, ValidationProblem, ProblemHttpResult> ToCreatedResult<TValue>(
-    this Result<TValue> result)
-  {
-    return result.Status switch
-    {
-      ResultStatus.Ok => TypedResults.Created(),
-      ResultStatus.Invalid => TypedResults.ValidationProblem(
-        result.ValidationErrors
-          .GroupBy(e => e.Identifier ?? string.Empty)
-          .ToDictionary(
-            g => g.Key,
-            g => g.Select(e => e.ErrorMessage).ToArray()
-          )
-      ),
-      _ => TypedResults.Problem(
-        title: "Create failed",
-        detail: string.Join("; ", result.Errors),
-        statusCode: StatusCodes.Status400BadRequest)
-    };
-  }
-
-  /// <summary>
-  /// Maps Result to TypedResults for endpoints that return Created, ValidationProblem, or ProblemHttpResult
-  /// </summary>
-  public static Results<Created<TResponse>, ValidationProblem, ProblemHttpResult> ToCreatedResult<TValue, TResponse>(
-    this Result<TValue> result,
-    Func<TValue, string> locationBuilder,
-    Func<TValue, TResponse> mapResponse)
-  {
-    return result.Status switch
-    {
-      ResultStatus.Ok => TypedResults.Created(locationBuilder(result.Value), mapResponse(result.Value)),
-      ResultStatus.Invalid => TypedResults.ValidationProblem(
-        result.ValidationErrors
-          .GroupBy(e => e.Identifier ?? string.Empty)
-          .ToDictionary(
-            g => g.Key,
-            g => g.Select(e => e.ErrorMessage).ToArray()
-          )
-      ),
-      _ => TypedResults.Problem(
-        title: "Create failed",
-        detail: string.Join("; ", result.Errors),
-        statusCode: StatusCodes.Status400BadRequest)
-    };
-  }
-
-  /// <summary>
-  /// Maps Result to TypedResults for GetById endpoints that return Ok, NotFound, or ProblemHttpResult
-  /// </summary>
-  public static Results<Ok<TResponse>, NotFound, ProblemHttpResult> ToGetByIdResult<TValue, TResponse>(
-    this Result<TValue> result,
-    Func<TValue, TResponse> mapResponse)
-  {
-    return ToOkOrNotFoundResult(result, mapResponse, "Get");
-  }
-
-  /// <summary>
-  /// Maps Result to TypedResults for Update endpoints that return Ok, NotFound, or ProblemHttpResult
-  /// </summary>
-  public static Results<Ok<TResponse>, NotFound, ProblemHttpResult> ToUpdateResult<TValue, TResponse>(
-    this Result<TValue> result,
-    Func<TValue, TResponse> mapResponse)
-  {
-    return ToOkOrNotFoundResult(result, mapResponse, "Update");
-  }
-
-  /// <summary>
-  /// Maps Result to TypedResults for Delete endpoints that return NoContent, NotFound, or ProblemHttpResult
-  /// </summary>
-  public static Results<NoContent, NotFound, ProblemHttpResult> ToDeleteResult(
-    this Result result)
-  {
-    return result.Status switch
-    {
-      ResultStatus.Ok => TypedResults.NoContent(),
-      ResultStatus.NotFound => TypedResults.NotFound(),
-      _ => TypedResults.Problem(
-        title: "Delete failed",
-        detail: string.Join("; ", result.Errors),
-        statusCode: StatusCodes.Status400BadRequest)
-    };
-  }
-
-  public static Results<Ok, NotFound, ProblemHttpResult> ToOkOrNotFoundResult(this Result result, string operationName)
-  {
-    switch (result.Status)
-    {
-      case ResultStatus.Ok:
-        return TypedResults.Ok();
-      case ResultStatus.NotFound:
-        return TypedResults.NotFound();
-      default:
+        return result.Status switch
         {
-          string title = operationName + " failed";
-          return TypedResults.Problem(string.Join("; ", result.Errors), null, 400, title);
-        }
-    }
-  }
+            ResultStatus.Ok =>
+                TypedResults.Created(
+                    locationBuilder(result.Value),
+                    responseBuilder(result.Value)),
 
-  public static Results<Ok<TResponse>, NotFound, ProblemHttpResult> ToOkOrNotFoundResult<TValue, TResponse>(this Result<TValue> result, Func<TValue, TResponse> mapResponse, string operationName)
-  {
-    switch (result.Status)
+            ResultStatus.Invalid =>
+                CreateValidationProblem(result),
+
+            ResultStatus.Conflict =>
+                TypedResults.Conflict(),
+
+            _ =>
+                CreateProblem(result, "Create failed")
+        };
+    }
+
+    public static Results<
+        Created,
+        ValidationProblem,
+        Conflict,
+        ProblemHttpResult>
+        ToCreated(this Result result)
     {
-      case ResultStatus.Ok:
-        return TypedResults.Ok(mapResponse(result.Value));
-      case ResultStatus.NotFound:
-        return TypedResults.NotFound();
-      default:
+        return result.Status switch
         {
-          string title = operationName + " failed";
-          return TypedResults.Problem(string.Join("; ", result.Errors), null, 400, title);
-        }
+            ResultStatus.Ok =>
+                TypedResults.Created(),
+
+            ResultStatus.Invalid =>
+                CreateValidationProblem(result),
+
+            ResultStatus.Conflict =>
+                TypedResults.Conflict(),
+
+            _ =>
+                CreateProblem(result, "Create failed")
+        };
     }
-  }
 
-  /// <summary>
-  /// Maps Result to TypedResults for endpoints that return Ok only (like List endpoints)
-  /// </summary>
-  public static Ok<TResponse> ToOkOnlyResult<TValue, TResponse>(
-    this Result<TValue> result,
-    Func<TValue, TResponse> mapResponse)
-  {
-    return TypedResults.Ok(mapResponse(result.Value));
-  }
+    public static Results<
+        Ok<TResponse>,
+        ValidationProblem,
+        ProblemHttpResult>
+        ToOk<TValue, TResponse>(
+            this Result<TValue> result,
+            Func<TValue, TResponse> responseBuilder)
+    {
+        return result.Status switch
+        {
+            ResultStatus.Ok =>
+                TypedResults.Ok(responseBuilder(result.Value)),
 
-  /// <summary>
-  /// Maps Result to TypedResults for endpoints that return NoContent
-  /// </summary>
-  public static NoContent ToNoContentOnlyResult(this Result _)
-  {
-    return TypedResults.NoContent();
-  }
+            ResultStatus.Invalid =>
+                CreateValidationProblem(result),
+
+            _ =>
+                CreateProblem(result, "Operation failed")
+        };
+    }
+
+    public static Results<
+        Ok,
+        ValidationProblem,
+        ProblemHttpResult>
+        ToOk(this Result result)
+    {
+        return result.Status switch
+        {
+            ResultStatus.Ok =>
+                TypedResults.Ok(),
+
+            ResultStatus.Invalid =>
+                CreateValidationProblem(result),
+
+            _ =>
+                CreateProblem(result, "Operation failed")
+        };
+    }
+
+    public static Results<
+        Ok<TResponse>,
+        NotFound,
+        ValidationProblem,
+        ProblemHttpResult>
+        ToOkOrNotFound<TValue, TResponse>(
+            this Result<TValue> result,
+            Func<TValue, TResponse> responseBuilder)
+    {
+        return result.Status switch
+        {
+            ResultStatus.Ok =>
+                TypedResults.Ok(responseBuilder(result.Value)),
+
+            ResultStatus.NotFound =>
+                TypedResults.NotFound(),
+
+            ResultStatus.Invalid =>
+                CreateValidationProblem(result),
+
+            _ =>
+                CreateProblem(result, "Resource not available")
+        };
+    }
+
+    public static Results<
+        Ok,
+        NotFound,
+        ValidationProblem,
+        ProblemHttpResult>
+        ToOkOrNotFound(this Result result)
+    {
+        return result.Status switch
+        {
+            ResultStatus.Ok =>
+                TypedResults.Ok(),
+
+            ResultStatus.NotFound =>
+                TypedResults.NotFound(),
+
+            ResultStatus.Invalid =>
+                CreateValidationProblem(result),
+
+            _ =>
+                CreateProblem(result, "Resource not available")
+        };
+    }
+
+    public static Results<
+        NoContent,
+        NotFound,
+        ValidationProblem,
+        ProblemHttpResult>
+        ToNoContent(this Result result)
+    {
+        return result.Status switch
+        {
+            ResultStatus.Ok =>
+                TypedResults.NoContent(),
+
+            ResultStatus.NotFound =>
+                TypedResults.NotFound(),
+
+            ResultStatus.Invalid =>
+                CreateValidationProblem(result),
+
+            _ =>
+                CreateProblem(result, "Operation failed")
+        };
+    }
+
+    private static ValidationProblem CreateValidationProblem<T>(Result<T> result)
+    {
+        return TypedResults.ValidationProblem(
+            result.ValidationErrors
+                .GroupBy(x => x.Identifier ?? string.Empty)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(x => x.ErrorMessage).ToArray()));
+    }
+
+    private static ValidationProblem CreateValidationProblem(Result result)
+    {
+        return TypedResults.ValidationProblem(
+            result.ValidationErrors
+                .GroupBy(x => x.Identifier ?? string.Empty)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(x => x.ErrorMessage).ToArray()));
+    }
+
+    private static ProblemHttpResult CreateProblem(
+        Result result,
+        string title)
+    {
+        return TypedResults.Problem(
+            title: title,
+            detail: string.Join("; ", result.Errors),
+            statusCode: StatusCodes.Status400BadRequest);
+    }
+
+    private static ProblemHttpResult CreateProblem<T>(
+        Result<T> result,
+        string title)
+    {
+        return TypedResults.Problem(
+            title: title,
+            detail: string.Join("; ", result.Errors),
+            statusCode: StatusCodes.Status400BadRequest);
+    }
 }
