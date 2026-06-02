@@ -21,9 +21,18 @@ internal class ConfigureAuthorizationOptions : IPostConfigureOptions<Authorizati
         {
             string[] schemes = [.. _options.Schemes.Select(s => s.Name)];
 
-            options.DefaultPolicy = new AuthorizationPolicyBuilder(schemes)
-                .RequireAuthenticatedUser()
-                .Build();
+            if (options.DefaultPolicy is not null)
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(options.DefaultPolicy)
+                    .AddAuthenticationSchemes(schemes)
+                    .Build();
+            }
+            else
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(schemes)
+                    .RequireAuthenticatedUser()
+                    .Build();
+            }
         }
     }
 }
