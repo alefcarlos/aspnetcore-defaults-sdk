@@ -195,7 +195,7 @@ public static class Extensions
 
     private static void MapLogLevelManagement(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/loglevel:test", (ILoggerFactory factory) =>
+        endpoints.MapPost("/log-level:test", (ILoggerFactory factory) =>
         {
             var logger = factory.CreateLogger("LogLevelRuntimeManagement");
             logger.LogTrace("trace");
@@ -205,7 +205,7 @@ public static class Extensions
             logger.LogError("error");
         });
 
-        endpoints.MapPost("/loglevel:changelevel", (RuntimeConfigurationProvider provider, LogLevel level) =>
+        endpoints.MapPost("/log-level:changelevel", (RuntimeConfigurationProvider provider, LogLevel level) =>
         {
             provider.SetLogLevel(level);
             return TypedResults.NoContent();
