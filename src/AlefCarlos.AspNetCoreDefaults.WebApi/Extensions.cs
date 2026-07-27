@@ -47,7 +47,7 @@ public static class Extensions
         app.MapDefaultEndpoints();
         app.MapOpenApi();
         app.MapScalarApiReference("/docs");
-        
+
         return app;
     }
 }

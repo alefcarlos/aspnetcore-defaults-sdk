@@ -5,7 +5,6 @@
 #:project ../src/metapackages/AlefCarlos.AspNetCore.WebApi
 
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.AmbientMetadata;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,7 +29,13 @@ app.UseHttpLogging();
 
 app.UseProblemDetailsWithDefaults();
 
-app.MapGet("/", () => new HelloResponse("Hello, World!"))
+app.MapFallback("/", context =>
+{
+    context.Response.Redirect("/docs");
+    return Task.CompletedTask;
+});
+
+app.MapGet("/hello", () => new HelloResponse("Hello, World!"))
     .WithName("HelloWorld");
 
 app.UseAuthentication();
@@ -60,7 +65,6 @@ record WhoAmI(string Scheme, IEnumerable<KeyValuePair<string, string>> Claims, s
 
 [JsonSerializable(typeof(HelloResponse))]
 [JsonSerializable(typeof(WhoAmI))]
-[JsonSerializable(typeof(ApplicationMetadata))]
 internal partial class AppJsonSerializerContext : JsonSerializerContext
 {
 
