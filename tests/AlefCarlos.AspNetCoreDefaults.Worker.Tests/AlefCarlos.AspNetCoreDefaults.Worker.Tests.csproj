@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <ProjectReference Include="..\AlefCarlos.AspNetCoreDefaults.Sut\AlefCarlos.AspNetCoreDefaults.Sut.csproj" />
+  </ItemGroup>
+
+</Project>

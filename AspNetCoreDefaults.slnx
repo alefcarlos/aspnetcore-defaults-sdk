@@ -15,4 +15,9 @@
   <Folder Name="/src/metapackages/">
     <Project Path="src/metapackages/AlefCarlos.AspNetCore.WebApi/AlefCarlos.AspNetCore.WebApi.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AlefCarlos.AspNetCoreDefaults.Sut/AlefCarlos.AspNetCoreDefaults.Sut.csproj" />
+    <Project Path="tests/AlefCarlos.AspNetCoreDefaults.WebApi.Tests/AlefCarlos.AspNetCoreDefaults.WebApi.Tests.csproj" />
+    <Project Path="tests/AlefCarlos.AspNetCoreDefaults.Worker.Tests/AlefCarlos.AspNetCoreDefaults.Worker.Tests.csproj" />
+  </Folder>
 </Solution>
