@@ -75,7 +75,8 @@ app.Run();
 - `AddDefaults()`:
   - adiciona OpenTelemetry, HTTP logging, health checks e service discovery
   - configura `ApplicationMetadata` (informational version / build version)
-- `MapDefaultEndpoints()` exclui `/app-info` da documentação pública (`ExcludeFromDescription`)
+- `MapDefaultEndpoints()`
+  - mapeia `/health`, `/alive`, `/log-level/*` e `/app-info`
 - `ProblemDetails` e tratamento de erros são disponibilizados por `AddWebApiDefaults()` e `UseProblemDetailsWithDefaults()`
 
 ## Exemplos e execução local

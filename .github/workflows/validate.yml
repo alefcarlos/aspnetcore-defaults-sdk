@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  push:
+  validate:
 
     runs-on: ubuntu-latest
 

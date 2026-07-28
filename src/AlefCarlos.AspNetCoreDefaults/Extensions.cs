@@ -1,8 +1,11 @@
+using System.Reflection;
 using AlefCarlos.AspNetCoreDefaults;
+using AlefCarlos.AspNetCoreDefaults.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.AmbientMetadata;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +16,6 @@ using Microsoft.Extensions.Options;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using System.Reflection;
 
 namespace Microsoft.Extensions.Hosting;
 
@@ -27,6 +29,15 @@ public static class Extensions
 
     public static TBuilder AddDefaults<TBuilder>(this TBuilder builder, Action<ApplicationMetadata>? configureApp = null) where TBuilder : IHostApplicationBuilder
     {
+        var runtimeSource = new RuntimeConfigurationSource();
+        builder.Configuration.Add(runtimeSource);
+        builder.Services.AddSingleton(runtimeSource.Provider);
+
+        builder.Services.ConfigureHttpJsonOptions(options =>
+        {
+            options.SerializerOptions.TypeInfoResolverChain.Add(InternalsSerializerContext.Default);
+        });
+
         builder.Services.AddOptionsWithValidateOnStart<ApplicationMetadata>()
             .ValidateDataAnnotations()
             .BindConfiguration("ambientmetadata:application")
@@ -172,9 +183,32 @@ public static class Extensions
             Predicate = r => r.Tags.Contains("live")
         });
 
-        app.MapGet("/app-info", (IOptions<ApplicationMetadata> appMetadata) => appMetadata.Value)
-            .ExcludeFromDescription();
+        app.MapGet("/app-info", (IOptions<ApplicationMetadata> appMetadata, RuntimeConfigurationProvider provider) =>
+        {
+            return TypedResults.Ok(new AppInformation(appMetadata.Value.ApplicationName, appMetadata.Value.EnvironmentName, provider.GetAll()));
+        });
+
+        app.MapLogLevelManagement();
 
         return app;
+    }
+
+    private static void MapLogLevelManagement(this IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapPost("/log-level:test", (ILoggerFactory factory) =>
+        {
+            var logger = factory.CreateLogger("LogLevelRuntimeManagement");
+            logger.LogTrace("trace");
+            logger.LogDebug("debug");
+            logger.LogInformation("info");
+            logger.LogWarning("warn");
+            logger.LogError("error");
+        });
+
+        endpoints.MapPost("/log-level:changelevel", (RuntimeConfigurationProvider provider, LogLevel level) =>
+        {
+            provider.SetLogLevel(level);
+            return TypedResults.NoContent();
+        });
     }
 }
