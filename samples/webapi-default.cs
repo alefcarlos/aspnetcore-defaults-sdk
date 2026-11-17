@@ -5,7 +5,6 @@
 #:project ../src/metapackages/AlefCarlos.AspNetCore.WebApi
 
 using System.Text.Json.Serialization;
-using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +21,7 @@ builder.Authentication
 builder.Services.AddAuthorization();
 
 builder.Services.Configure<OpenApiInfo>(opts => opts.Description = "Description for this api bla bla bla");
+// builder.Services.Configure<ScalarOptions>();
 
 var app = builder.Build();
 
