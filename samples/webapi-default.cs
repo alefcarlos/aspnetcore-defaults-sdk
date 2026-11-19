@@ -5,7 +5,6 @@
 #:project ../src/metapackages/AlefCarlos.AspNetCore.WebApi
 
 using System.Text.Json.Serialization;
-using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
