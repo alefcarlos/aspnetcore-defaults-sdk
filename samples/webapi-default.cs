@@ -21,7 +21,6 @@ builder.Authentication
 builder.Services.AddAuthorization();
 
 builder.Services.Configure<OpenApiInfo>(opts => opts.Description = "Description for this api bla bla bla");
-// builder.Services.Configure<ScalarOptions>();
 
 var app = builder.Build();
 
