@@ -4,3 +4,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6I
 ###
 
 GET http://localhost:5000/openapi/v1.json
+
+###
+
+GET http://localhost:5000/hello

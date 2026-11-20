@@ -1,10 +1,10 @@
 ﻿#:sdk Microsoft.NET.Sdk.Web
-#:property PublishAot=false
 #:property UserSecretsId=13e6dfb7-860b-4703-ab0f-ae7e75fcfbb5
 #:property IncludeSourceRevisionInInformationalVersion=false
 #:project ../src/metapackages/AlefCarlos.AspNetCore.WebApi
 
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
