@@ -9,7 +9,8 @@
 - Health checks prontos com endpoints `/health` e `/alive`
 - `MapDefaultEndpoints()` que mapeia `/health`, `/alive` e `/app-info`
 - Extensões específicas para Web API (`AddWebApiDefaults`, `MapDefaultWebApiEndpoints`)
-- Integração com OpenAPI e documentação (`/docs`, `/swagger`) via `Scalar.AspNetCore`
+- Integração com OpenAPI e documentação (`/docs`) via `Scalar.AspNetCore`
+- Enum como string
 
 ## 🧩 Projetos fornecidos
 
@@ -40,6 +41,58 @@ app.MapDefaultWebApiEndpoints();
 app.Run();
 ```
 
+### Exemplo rápido usando containers
+
+#### bash
+
+```sh
+docker run --rm -i -p 8080:8080 mcr.microsoft.com/dotnet/sdk:11.0 dotnet run - <<'EOF'
+#:sdk Microsoft.NET.Sdk.Web
+#:property PublishAot=false
+#:package AlefCarlos.AspNetCore.WebApi@*
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.AddWebApiDefaults();
+
+var app = builder.Build();
+
+app.UseHttpLogging();
+app.UseProblemDetailsWithDefaults();
+
+app.MapDefaultWebApiEndpoints();
+
+app.MapGet("/", () => "pong");
+
+app.Run();
+EOF
+```
+
+#### powershell
+
+```powershell
+@'
+#:sdk Microsoft.NET.Sdk.Web
+#:property PublishAot=false
+#:package AlefCarlos.AspNetCore.WebApi@*
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.AddWebApiDefaults();
+
+var app = builder.Build();
+
+app.UseHttpLogging();
+app.UseProblemDetailsWithDefaults();
+
+app.MapDefaultWebApiEndpoints();
+
+app.MapGet("/", () => "pong");
+
+app.Run();
+'@ | wslc run --rm -i -p 8080:8080 mcr.microsoft.com/dotnet/sdk:11.0 dotnet run -
+```
+
 ## Endpoints padrão e comportamento 📍
 
 - `GET /health` — readiness (todos os checks)
@@ -50,7 +103,7 @@ app.Run();
 ## Logging e filtros 🔇
 
 - Habilita `HttpLogging` com campos úteis (request/response + headers + duration)
-- `FilterRequestLoggingInterceptor` desativa logs para endpoints como `/metrics`, `/env`, `/health`, `/alive`, `/docs`, `/swagger`
+- `FilterRequestLoggingInterceptor` desativa logs para endpoints como `/metrics`, `/health`, `/alive`, `/docs`
 
 ## OpenTelemetry & exportadores 🛰️
 

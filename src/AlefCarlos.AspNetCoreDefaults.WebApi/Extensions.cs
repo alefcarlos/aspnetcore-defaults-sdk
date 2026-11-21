@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using AspNetCoreDefaults.WebApi.OpenApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.AmbientMetadata;
@@ -13,6 +14,11 @@ public static class Extensions
     public static WebApplicationBuilder AddWebApiDefaults(this WebApplicationBuilder builder, Action<ApplicationMetadata>? configureApp = null)
     {
         builder.AddDefaults(configureApp);
+
+        builder.Services.ConfigureHttpJsonOptions(options =>
+        {
+            options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
 
         builder.Services.AddProblemDetails();
 

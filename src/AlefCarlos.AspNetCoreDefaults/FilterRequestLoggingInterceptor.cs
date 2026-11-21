@@ -20,11 +20,6 @@ internal class FilterRequestLoggingInterceptor : IHttpLoggingInterceptor
             logContext.LoggingFields = HttpLoggingFields.None;
         }
 
-        if (ShouldFilterEndpoint(logContext.HttpContext, "/env"))
-        {
-            logContext.LoggingFields = HttpLoggingFields.None;
-        }
-
         if (ShouldFilterEndpoint(logContext.HttpContext, "/health"))
         {
             logContext.LoggingFields = HttpLoggingFields.None;
@@ -36,11 +31,6 @@ internal class FilterRequestLoggingInterceptor : IHttpLoggingInterceptor
         }
 
         if (ShouldFilterEndpoint(logContext.HttpContext, "/docs"))
-        {
-            logContext.LoggingFields = HttpLoggingFields.None;
-        }
-
-        if (ShouldFilterEndpoint(logContext.HttpContext, "/swagger"))
         {
             logContext.LoggingFields = HttpLoggingFields.None;
         }
